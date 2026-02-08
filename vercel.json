@@ -1,0 +1,19 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "framework": "create-react-app",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
+  "env": {
+    "TELEGRAM_BOT_TOKEN": "8431547548:AAEdt2HObM72b_DxJ3V44oVFZReLodMM5Sc",
+    "FIREBASE_DATABASE_URL": "https://jetzone24-96bba-default-rtdb.europe-west1.firebasedatabase.app"
+  }
+}
