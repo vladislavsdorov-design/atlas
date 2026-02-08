@@ -218,7 +218,106 @@ const MiniApp = () => {
       minimumFractionDigits: 0,
     }).format(price);
   };
+  // В начале MiniApp.js, после импортов, добавить:
+  const telegramUtils = {
+    // Проверка, запущено ли в Telegram
+    isTelegramWebApp: () => {
+      return window.Telegram && window.Telegram.WebApp;
+    },
 
+    // Получение данных пользователя Telegram
+    getTelegramUser: () => {
+      if (this.isTelegramWebApp()) {
+        return window.Telegram.WebApp.initDataUnsafe?.user;
+      }
+      return null;
+    },
+
+    // Получение параметров запуска
+    getLaunchParams: () => {
+      if (this.isTelegramWebApp()) {
+        return window.Telegram.WebApp.initData;
+      }
+      return "";
+    },
+
+    // Закрыть Web App
+    closeWebApp: () => {
+      if (this.isTelegramWebApp()) {
+        window.Telegram.WebApp.close();
+      }
+    },
+
+    // Показать подтверждение
+    showConfirm: (message, callback) => {
+      if (this.isTelegramWebApp()) {
+        window.Telegram.WebApp.showConfirm(message, callback);
+      } else {
+        if (window.confirm(message)) {
+          callback(true);
+        }
+      }
+    },
+
+    // Включить/выключить кнопку назад
+    setBackButton: (visible) => {
+      if (this.isTelegramWebApp()) {
+        if (visible) {
+          window.Telegram.WebApp.BackButton.show();
+        } else {
+          window.Telegram.WebApp.BackButton.hide();
+        }
+      }
+    },
+  };
+
+  // Затем в useEffect MiniApp добавить:
+  useEffect(() => {
+    // Инициализация Telegram Web App
+    if (telegramUtils.isTelegramWebApp()) {
+      const tg = window.Telegram.WebApp;
+
+      // Настройка Web App
+      tg.ready();
+      tg.expand();
+      tg.enableClosingConfirmation();
+      tg.setBackgroundColor("#f8f9fa");
+      tg.setHeaderColor("secondary_bg_color");
+
+      // Настройка кнопки назад
+      tg.BackButton.onClick(() => {
+        if (activeStep > 0) {
+          setActiveStep(activeStep - 1);
+        } else {
+          tg.close();
+        }
+      });
+
+      // Показать/скрыть кнопку назад
+      if (activeStep > 0) {
+        tg.BackButton.show();
+      } else {
+        tg.BackButton.hide();
+      }
+
+      // Получение данных пользователя
+      const user = tg.initDataUnsafe?.user;
+      if (user) {
+        setTelegramUser({
+          id: user.id,
+          firstName: user.first_name,
+          lastName: user.last_name || "",
+          username: user.username || "",
+          languageCode: user.language_code || "ru",
+          phoneNumber: user.phone_number || "",
+        });
+
+        if (user.phone_number) {
+          setPhone(user.phone_number);
+        }
+      }
+    }
+  }, [activeStep]); // Добавляем activeStep в зависимости
   const getStatusColor = (status) => {
     const colors = {
       новый: "primary",

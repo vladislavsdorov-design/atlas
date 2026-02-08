@@ -1,5 +1,11 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -81,34 +87,39 @@ function HomePage() {
   );
 }
 
+// Компонент для проверки запуска в Telegram
+function MainLayout({ children }) {
+  const location = useLocation();
+  const isMiniApp = location.pathname === "/mini-app";
+
+  // Если мы в мини-приложении, оборачиваем в TelegramWebApp
+  if (isMiniApp) {
+    return <TelegramWebApp>{children}</TelegramWebApp>;
+  }
+
+  // Иначе показываем обычный интерфейс
+  return children;
+}
+
 function App() {
+  // Проверяем, запущено ли в Telegram Web App
   const isTelegramWebApp = window.Telegram?.WebApp;
 
+  // Если запущено в Telegram Web App, скрываем навигацию
   if (isTelegramWebApp) {
     return (
       <Router>
-        <Routes>
-          <Route
-            path="/mini-app"
-            element={
-              <TelegramWebApp>
-                <MiniApp />
-              </TelegramWebApp>
-            }
-          />
-          <Route
-            path="*"
-            element={
-              <TelegramWebApp>
-                <MiniApp />
-              </TelegramWebApp>
-            }
-          />
-        </Routes>
+        <MainLayout>
+          <Routes>
+            <Route path="/mini-app" element={<MiniApp />} />
+            <Route path="*" element={<MiniApp />} />
+          </Routes>
+        </MainLayout>
       </Router>
     );
   }
 
+  // Обычный веб-сайт
   return (
     <Router>
       <AppBar position="static">
@@ -133,18 +144,13 @@ function App() {
         </Toolbar>
       </AppBar>
 
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route
-          path="/mini-app"
-          element={
-            <TelegramWebApp>
-              <MiniApp />
-            </TelegramWebApp>
-          }
-        />
-      </Routes>
+      <MainLayout>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/admin" element={<AdminPanel />} />
+          <Route path="/mini-app" element={<MiniApp />} />
+        </Routes>
+      </MainLayout>
     </Router>
   );
 }
