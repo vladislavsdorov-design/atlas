@@ -837,30 +837,30 @@ const mockFirebaseService = {
 
   subscribeToUserOrders(userId, callback) {
     // Демо данные
-    setTimeout(() => {
-      callback([
-        {
-          id: "order_1",
-          title: "Тестовый заказ",
-          description: "Описание тестового заказа",
-          price: 1500,
-          location: "Москва, Красная площадь",
-          status: "в пути",
-          tracking: [
-            {
-              status: "новый",
-              location: "Склад отправки",
-              timestamp: new Date(Date.now() - 86400000).toISOString(),
-            },
-            {
-              status: "в пути",
-              location: "Москва, Красная площадь",
-              timestamp: new Date().toISOString(),
-            },
-          ],
-        },
-      ]);
-    }, 500);
+    // setTimeout(() => {
+    //   callback([
+    //     {
+    //       id: "order_1",
+    //       title: "Тестовый заказ",
+    //       description: "Описание тестового заказа",
+    //       price: 1500,
+    //       location: "Москва, Красная площадь",
+    //       status: "в пути",
+    //       tracking: [
+    //         {
+    //           status: "новый",
+    //           location: "Склад отправки",
+    //           timestamp: new Date(Date.now() - 86400000).toISOString(),
+    //         },
+    //         {
+    //           status: "в пути",
+    //           location: "Москва, Красная площадь",
+    //           timestamp: new Date().toISOString(),
+    //         },
+    //       ],
+    //     },
+    //   ]);
+    // }, 500);
 
     // Возвращаем функцию отписки
     return () => {};
