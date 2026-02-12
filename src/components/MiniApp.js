@@ -937,42 +937,74 @@ const MiniApp = () => {
       setLoading(false);
     }
   };
-
-  const handlePhoneRegistration = async () => {
-    if (phoneOption === "custom" && !phone.trim()) {
-      setError("Введите номер телефона");
+  const loadUserOrders = async (key) => {
+    try {
+      const userOrders = await firebaseService.getOrdersByUserKey(key);
+      setOrders(userOrders);
+    } catch (error) {
+      console.error("Ошибка загрузки заказов:", error);
+    }
+  };
+  const handlePhoneRegistration = async (phoneNumber) => {
+    // Проверяем, не отправляли ли уже форму
+    if (localStorage.getItem("phoneRegistered") === "true") {
+      showSnackbar("Номер телефона уже был зарегистрирован", "info");
       return;
     }
 
+    setLoading(true);
     try {
-      setLoading(true);
-
-      if (phoneOption === "custom") {
-        await firebaseService.updateUserPhone(userData.id, phone);
-      } else if (telegramUser?.phoneNumber) {
-        await firebaseService.updateUserPhone(
-          userData.id,
-          telegramUser.phoneNumber
-        );
-      }
-
-      setActiveStep(2);
-
-      const unsubscribe = firebaseService.subscribeToUserOrders(
-        userData.id,
-        (ordersList) => {
-          setOrders(ordersList);
-        }
+      // Используем firebaseService вместо api
+      // Здесь должна быть ваша логика сохранения телефона в Firebase
+      await firebaseService.updateUserPhone(
+        userData.registrationKey,
+        phoneNumber
       );
 
-      return () => unsubscribe();
-    } catch (err) {
-      setError("Ошибка регистрации: " + err.message);
+      // Обновляем данные пользователя
+      setUserData({
+        ...userData,
+        phone: phoneNumber,
+      });
+
+      // Сохраняем флаг успешной регистрации
+      localStorage.setItem("phoneRegistered", "true");
+      localStorage.setItem("registeredPhone", phoneNumber);
+      localStorage.setItem("phoneRegistrationCompleted", "true");
+
+      // Показываем сообщение об успехе
+      showSnackbar("✅ Номер телефона успешно привязан!", "success");
+
+      // Переходим к следующему шагу
+      setActiveStep(2);
+
+      // Загружаем заказы пользователя
+      await loadUserOrders(userData.registrationKey);
+    } catch (error) {
+      console.error("Ошибка регистрации телефона:", error);
+      showSnackbar("Ошибка при сохранении номера: " + error.message, "error");
     } finally {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    // Проверяем, был ли уже зарегистрирован номер
+    const isPhoneRegistered = localStorage.getItem("phoneRegistered");
+    const savedPhone = localStorage.getItem("registeredPhone");
+    const completed = localStorage.getItem("phoneRegistrationCompleted");
 
+    if (isPhoneRegistered === "true" && savedPhone) {
+      // Если номер уже зарегистрирован, показываем информацию
+      setPhoneOption("telegram");
+      setPhone(savedPhone);
+
+      // Если регистрация была завершена и мы на шаге 1, переходим к заказам
+      if (completed === "true" && activeStep === 1 && userData) {
+        setActiveStep(2);
+        loadUserOrders(userData.registrationKey);
+      }
+    }
+  }, [activeStep, userData]); // Добавляем зависимости
   const getStatusIcon = (status) => {
     const icons = {
       новый: <CheckCircleIcon color="primary" />,
@@ -1236,6 +1268,16 @@ const MiniApp = () => {
               />
             )}
 
+            {phoneOption === "telegram" && telegramUser?.phoneNumber && (
+              <TextField
+                fullWidth
+                label="Номер из Telegram"
+                value={telegramUser.phoneNumber}
+                disabled
+                sx={{ mb: 3, bgcolor: "#f5f5f5" }}
+              />
+            )}
+
             <Box sx={{ display: "flex", gap: 2 }}>
               <Button
                 variant="outlined"
@@ -1246,13 +1288,40 @@ const MiniApp = () => {
               </Button>
               <Button
                 variant="contained"
-                onClick={handlePhoneRegistration}
-                disabled={loading}
+                onClick={async () => {
+                  // Автоматически подставляем номер из Telegram, если выбран этот способ
+                  let phoneToSubmit;
+                  if (phoneOption === "telegram" && telegramUser?.phoneNumber) {
+                    phoneToSubmit = telegramUser.phoneNumber;
+                  } else {
+                    phoneToSubmit = phone;
+                  }
+
+                  await handlePhoneRegistration(phoneToSubmit);
+
+                  // Блокируем возможность повторной отправки
+                  localStorage.setItem("phoneRegistered", "true");
+                  localStorage.setItem("registeredPhone", phoneToSubmit);
+                  localStorage.setItem("phoneRegistrationCompleted", "true");
+                }}
+                disabled={
+                  loading ||
+                  (phoneOption === "custom" && !phone) ||
+                  localStorage.getItem("phoneRegistered") === "true"
+                }
                 fullWidth
               >
                 {loading ? <CircularProgress size={24} /> : "Продолжить"}
               </Button>
             </Box>
+
+            {/* Показываем сообщение, если номер уже был зарегистрирован */}
+            {localStorage.getItem("phoneRegistered") === "true" && (
+              <Alert severity="info" sx={{ mt: 2 }}>
+                ✓ Номер телефона уже зарегистрирован:{" "}
+                {localStorage.getItem("registeredPhone")}
+              </Alert>
+            )}
           </Box>
         )}
 
