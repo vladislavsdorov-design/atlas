@@ -1,212 +1,380 @@
-import { database } from "../firebase/config";
-import {
-  ref,
-  set,
-  get,
-  push,
-  update,
-  remove,
-  onValue,
-} from "firebase/database";
+import { database } from "../firebase";
+import { ref, set, push, get, update, onValue } from "firebase/database";
 
-export const firebaseService = {
-  // Генерация ключа
-  generateRegistrationKey() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let key = "JET-";
-    for (let i = 0; i < 6; i++) {
-      key += chars.charAt(Math.floor(Math.random() * chars.length));
-      if (i === 2) key += "-";
-    }
-    return key;
-  },
+class FirebaseService {
+  // ============== ПОЛЬЗОВАТЕЛИ ==============
 
-  // Создание пользователя
-  async createUser(userData) {
-    const key = this.generateRegistrationKey();
-    const userId = `user_${Date.now()}`;
-
-    // Сохраняем ключ
-    const keyRef = ref(database, `registrationKeys/${key}`);
-    await set(keyRef, {
-      key,
-      userId,
-      userName: userData.name,
-      createdAt: new Date().toISOString(),
-      used: false,
-    });
-
-    // Сохраняем пользователя
-    const userRef = ref(database, `users/${userId}`);
-    await set(userRef, {
-      id: userId,
-      name: userData.name,
-      phone: userData.phone || "",
-      registrationKey: key,
-      createdAt: new Date().toISOString(),
-      telegramId: null,
-      telegramUsername: null,
-      orders: {},
-    });
-
-    return { userId, key };
-  },
-
-  // Получение всех пользователей
   async getAllUsers() {
-    const usersRef = ref(database, "users");
-    const snapshot = await get(usersRef);
+    try {
+      const usersRef = ref(database, "users");
+      const snapshot = await get(usersRef);
 
-    if (!snapshot.exists()) return [];
+      if (snapshot.exists()) {
+        const users = snapshot.val();
+        return Object.entries(users).map(([id, data]) => ({
+          id,
+          ...data,
+          orders: data.orders || {},
+          telegramRequests: data.telegramRequests || {},
+        }));
+      }
+      return [];
+    } catch (error) {
+      console.error("Error getting users:", error);
+      throw error;
+    }
+  }
 
-    return Object.entries(snapshot.val()).map(([id, data]) => ({
-      id,
-      ...data,
-    }));
-  },
+  async createUser(userData) {
+    try {
+      const usersRef = ref(database, "users");
+      const newUserRef = push(usersRef);
+      const userId = newUserRef.key;
 
-  // Получение пользователя по ID
+      const userWithId = {
+        ...userData,
+        id: userId,
+        createdAt: new Date().toISOString(),
+        orders: {},
+        telegramRequests: {},
+      };
+
+      await set(ref(database, `users/${userId}`), userWithId);
+
+      return {
+        userId,
+        ...userWithId,
+      };
+    } catch (error) {
+      console.error("Error creating user:", error);
+      throw error;
+    }
+  }
+
   async getUserById(userId) {
-    const userRef = ref(database, `users/${userId}`);
-    const snapshot = await get(userRef);
+    try {
+      const userRef = ref(database, `users/${userId}`);
+      const snapshot = await get(userRef);
 
-    if (!snapshot.exists()) return null;
+      if (snapshot.exists()) {
+        return {
+          id: userId,
+          ...snapshot.val(),
+        };
+      }
+      return null;
+    } catch (error) {
+      console.error("Error getting user:", error);
+      throw error;
+    }
+  }
 
-    return { id: userId, ...snapshot.val() };
-  },
+  async getUserByRegistrationKey(key) {
+    try {
+      const usersRef = ref(database, "users");
+      const snapshot = await get(usersRef);
 
-  // Обновление телефона пользователя
+      if (snapshot.exists()) {
+        const users = snapshot.val();
+        for (const [userId, userData] of Object.entries(users)) {
+          if (userData.registrationKey === key) {
+            return {
+              id: userId,
+              ...userData,
+            };
+          }
+        }
+      }
+      return null;
+    } catch (error) {
+      console.error("Error getting user by key:", error);
+      throw error;
+    }
+  }
+
   async updateUserPhone(userId, phone) {
-    const userRef = ref(database, `users/${userId}`);
-    await update(userRef, { phone });
-  },
+    try {
+      await update(ref(database, `users/${userId}`), {
+        phone: phone,
+        updatedAt: new Date().toISOString(),
+      });
+      return true;
+    } catch (error) {
+      console.error("Error updating user phone:", error);
+      throw error;
+    }
+  }
 
-  // Привязка Telegram
-  async linkTelegram(userId, telegramData) {
-    const userRef = ref(database, `users/${userId}`);
-    await update(userRef, {
-      telegramId: telegramData.id,
-      telegramUsername: telegramData.username,
-      telegramLinkedAt: new Date().toISOString(),
-    });
-  },
+  async updateUser(userId, userData) {
+    try {
+      await update(ref(database, `users/${userId}`), {
+        ...userData,
+        updatedAt: new Date().toISOString(),
+      });
+      return true;
+    } catch (error) {
+      console.error("Error updating user:", error);
+      throw error;
+    }
+  }
 
-  // Добавление заказа
+  // ============== ЗАПРОСЫ НА АКТИВАЦИЮ ==============
+
+  async addTelegramRequest(userData) {
+    try {
+      const requestsRef = ref(database, "telegram_requests");
+      const newRequestRef = push(requestsRef);
+      const requestId = newRequestRef.key;
+
+      const requestData = {
+        id: requestId,
+        telegramId: userData.telegramId.toString(),
+        firstName: userData.firstName || "",
+        lastName: userData.lastName || "",
+        username: userData.username || "",
+        phone: userData.phone || userData.phoneNumber || "",
+        requestedAt: new Date().toISOString(),
+        status: "pending",
+        userId: null,
+      };
+
+      await set(newRequestRef, requestData);
+
+      await set(ref(database, `telegram_users/${userData.telegramId}`), {
+        requestId,
+        status: "pending",
+        requestedAt: new Date().toISOString(),
+      });
+
+      return requestId;
+    } catch (error) {
+      console.error("Error adding telegram request:", error);
+      throw error;
+    }
+  }
+
+  async getTelegramRequests() {
+    try {
+      const requestsRef = ref(database, "telegram_requests");
+      const snapshot = await get(requestsRef);
+
+      if (snapshot.exists()) {
+        const requests = snapshot.val();
+        return Object.entries(requests).map(([id, data]) => ({
+          id,
+          ...data,
+        }));
+      }
+      return [];
+    } catch (error) {
+      console.error("Error getting telegram requests:", error);
+      throw error;
+    }
+  }
+
+  async approveTelegramRequest(requestId, userId) {
+    try {
+      const requestRef = ref(database, `telegram_requests/${requestId}`);
+      const requestSnapshot = await get(requestRef);
+
+      if (!requestSnapshot.exists()) {
+        throw new Error("Запрос не найден");
+      }
+
+      const requestData = requestSnapshot.val();
+
+      await update(ref(database, `telegram_requests/${requestId}`), {
+        status: "approved",
+        approvedAt: new Date().toISOString(),
+        userId: userId,
+      });
+
+      await update(ref(database, `users/${userId}`), {
+        telegramId: requestData.telegramId,
+        telegramUsername: requestData.username || "",
+        telegramFirstName: requestData.firstName,
+        telegramLastName: requestData.lastName,
+        phone: requestData.phone || "",
+        telegramApprovedAt: new Date().toISOString(),
+      });
+
+      await update(ref(database, `telegram_users/${requestData.telegramId}`), {
+        status: "approved",
+        userId: userId,
+        approvedAt: new Date().toISOString(),
+      });
+
+      return {
+        ...requestData,
+        userId,
+      };
+    } catch (error) {
+      console.error("Error approving telegram request:", error);
+      throw error;
+    }
+  }
+
+  async rejectTelegramRequest(requestId) {
+    try {
+      const requestRef = ref(database, `telegram_requests/${requestId}`);
+      const requestSnapshot = await get(requestRef);
+
+      if (!requestSnapshot.exists()) {
+        throw new Error("Запрос не найден");
+      }
+
+      const requestData = requestSnapshot.val();
+
+      await update(ref(database, `telegram_requests/${requestId}`), {
+        status: "rejected",
+        rejectedAt: new Date().toISOString(),
+      });
+
+      await update(ref(database, `telegram_users/${requestData.telegramId}`), {
+        status: "rejected",
+        rejectedAt: new Date().toISOString(),
+      });
+
+      return true;
+    } catch (error) {
+      console.error("Error rejecting telegram request:", error);
+      throw error;
+    }
+  }
+
+  // ============== ЗАКАЗЫ ==============
+
+  async getUserOrders(userId) {
+    try {
+      const ordersRef = ref(database, `users/${userId}/orders`);
+      const snapshot = await get(ordersRef);
+
+      if (snapshot.exists()) {
+        const orders = snapshot.val();
+        return Object.entries(orders).map(([orderId, data]) => ({
+          id: orderId,
+          orderId,
+          ...data,
+        }));
+      }
+      return [];
+    } catch (error) {
+      console.error("Error getting user orders:", error);
+      throw error;
+    }
+  }
+
   async addOrder(userId, orderData) {
-    const orderId = `order_${Date.now()}`;
-    const orderRef = ref(database, `users/${userId}/orders/${orderId}`);
+    try {
+      const ordersRef = ref(database, `users/${userId}/orders`);
+      const newOrderRef = push(ordersRef);
+      const orderId = newOrderRef.key;
 
-    await set(orderRef, {
-      id: orderId,
-      title: orderData.title,
-      description: orderData.description,
-      price: orderData.price,
-      location: orderData.location,
-      status: "новый",
-      createdAt: new Date().toISOString(),
-      tracking: [
-        {
-          status: "новый",
-          location: orderData.location,
-          timestamp: new Date().toISOString(),
-        },
-      ],
-    });
+      const orderWithId = {
+        ...orderData,
+        id: orderId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
 
-    return orderId;
-  },
+      await set(
+        ref(database, `users/${userId}/orders/${orderId}`),
+        orderWithId
+      );
 
-  // Обновление местоположения заказа
+      return orderId;
+    } catch (error) {
+      console.error("Error adding order:", error);
+      throw error;
+    }
+  }
+
   async updateOrderLocation(userId, orderId, location, status) {
-    const orderRef = ref(database, `users/${userId}/orders/${orderId}`);
-    const snapshot = await get(orderRef);
+    try {
+      const orderRef = ref(database, `users/${userId}/orders/${orderId}`);
+      const snapshot = await get(orderRef);
 
-    if (!snapshot.exists()) return false;
+      if (snapshot.exists()) {
+        const orderData = snapshot.val();
+        const tracking = orderData.tracking || [];
 
-    const order = snapshot.val();
-    const tracking = order.tracking || [];
-
-    await update(orderRef, {
-      location,
-      status: status || order.status,
-      tracking: [
-        ...tracking,
-        {
-          status: status || order.status,
+        tracking.push({
+          status,
           location,
           timestamp: new Date().toISOString(),
-        },
-      ],
-    });
+        });
 
-    return true;
-  },
+        await update(ref(database, `users/${userId}/orders/${orderId}`), {
+          location,
+          status,
+          tracking,
+          updatedAt: new Date().toISOString(),
+        });
 
-  // Получение заказов пользователя
-  async getUserOrders(userId) {
-    const ordersRef = ref(database, `users/${userId}/orders`);
-    const snapshot = await get(ordersRef);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error updating order location:", error);
+      throw error;
+    }
+  }
 
-    if (!snapshot.exists()) return [];
+  async updateOrderStatus(userId, orderId, status) {
+    try {
+      await update(ref(database, `users/${userId}/orders/${orderId}`), {
+        status,
+        updatedAt: new Date().toISOString(),
+      });
+      return true;
+    } catch (error) {
+      console.error("Error updating order status:", error);
+      throw error;
+    }
+  }
 
-    return Object.values(snapshot.val());
-  },
-
-  // Реальная подписка на заказы
   subscribeToUserOrders(userId, callback) {
     const ordersRef = ref(database, `users/${userId}/orders`);
-    return onValue(ordersRef, (snapshot) => {
+
+    const unsubscribe = onValue(ordersRef, (snapshot) => {
       if (snapshot.exists()) {
-        const orders = Object.values(snapshot.val());
-        callback(orders);
+        const orders = snapshot.val();
+        const ordersArray = Object.entries(orders).map(([orderId, data]) => ({
+          id: orderId,
+          ...data,
+        }));
+        callback(ordersArray);
       } else {
         callback([]);
       }
     });
-  },
 
-  // Проверка ключа регистрации
+    return unsubscribe;
+  }
+
+  // ============== КЛЮЧИ ==============
+
   async validateRegistrationKey(key) {
-    const keyRef = ref(database, `registrationKeys/${key}`);
-    const snapshot = await get(keyRef);
+    try {
+      const user = await this.getUserByRegistrationKey(key);
 
-    if (!snapshot.exists()) {
-      return { valid: false, error: "Ключ не найден" };
+      if (user) {
+        return {
+          valid: true,
+          userId: user.id,
+          userName: user.name,
+        };
+      }
+
+      return {
+        valid: false,
+        error: "Неверный регистрационный ключ",
+      };
+    } catch (error) {
+      console.error("Error validating key:", error);
+      throw error;
     }
+  }
+}
 
-    const keyData = snapshot.val();
-
-    if (keyData.used) {
-      return { valid: false, error: "Ключ уже использован" };
-    }
-
-    return {
-      valid: true,
-      userId: keyData.userId,
-      userName: keyData.userName,
-    };
-  },
-
-  // Использование ключа
-  async useRegistrationKey(key, telegramData) {
-    const keyRef = ref(database, `registrationKeys/${key}`);
-    await update(keyRef, {
-      used: true,
-      usedAt: new Date().toISOString(),
-      telegramId: telegramData.id,
-      telegramUsername: telegramData.username,
-    });
-
-    const keySnapshot = await get(keyRef);
-    const keyData = keySnapshot.val();
-
-    const userRef = ref(database, `users/${keyData.userId}`);
-    await update(userRef, {
-      telegramId: telegramData.id,
-      telegramUsername: telegramData.username,
-      telegramLinkedAt: new Date().toISOString(),
-    });
-
-    return keyData.userId;
-  },
-};
+export const firebaseService = new FirebaseService();
