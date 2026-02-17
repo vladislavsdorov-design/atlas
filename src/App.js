@@ -240,6 +240,7 @@ import {
 import AdminPanel from "./components/AdminPanel";
 import MiniApp from "./components/MiniApp";
 import AdminLogin from "./components/AdminLogin";
+import "./style/style.css";
 
 function HomePage() {
   return (
