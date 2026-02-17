@@ -1340,34 +1340,41 @@ const MiniApp = () => {
               {loading ? <CircularProgress size={24} /> : "Продолжить"}
             </Button>
 
-            {/* Кнопка активации всегда видна если есть Telegram и нет ключа */}
-            {telegramUser && !requestSent && !isPhoneRegistered && (
+            {/* КНОПКА АКТИВАЦИИ ВСЕГДА ВИДНА если есть Telegram */}
+            {telegramUser && (
               <Box sx={{ mt: 2 }}>
                 <Divider sx={{ mb: 2 }}>
-                  <Chip label="или" size="small" />
+                  <Chip label="Нет ключа?" size="small" />
                 </Divider>
 
                 <Button
                   variant="outlined"
                   color="primary"
                   onClick={handleActivate}
-                  disabled={loading}
+                  disabled={loading || requestSent}
                   startIcon={
                     loading ? <CircularProgress size={20} /> : <TelegramIcon />
                   }
                   fullWidth
                   size="large"
+                  sx={{
+                    py: 1.5,
+                    borderWidth: 2,
+                    "&:hover": {
+                      borderWidth: 2,
+                    },
+                  }}
                 >
-                  {loading ? "Отправка..." : "Запросить ключ активации"}
+                  {loading ? "Отправка..." : "🔑 Запросить ключ активации"}
                 </Button>
 
                 <Typography
                   variant="caption"
                   display="block"
-                  sx={{ mt: 1, textAlign: "center" }}
+                  sx={{ mt: 1, textAlign: "center", fontWeight: 500 }}
                   color="textSecondary"
                 >
-                  Если у вас нет ключа - нажмите эту кнопку
+                  Нажмите, если у вас нет ключа
                 </Typography>
               </Box>
             )}
@@ -1388,6 +1395,7 @@ const MiniApp = () => {
                   size="small"
                   sx={{ mt: 1 }}
                   onClick={() => setRequestSent(false)}
+                  color="inherit"
                 >
                   Отправить еще раз
                 </Button>
