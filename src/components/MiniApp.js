@@ -887,6 +887,8 @@ const MiniApp = () => {
           } else if (savedPhone && phoneRegistered === "true") {
             setPhone(savedPhone);
             setIsPhoneRegistered(true);
+            setActiveStep(2);
+            await loadUserOrders(savedUserId);
           }
         }
       }
@@ -923,7 +925,6 @@ const MiniApp = () => {
   const showSnackbar = (message, severity = "success") => {
     setSnackbar({ open: true, message, severity });
 
-    // Показываем в Telegram если доступно
     if (window.Telegram?.WebApp && severity === "success") {
       window.Telegram.WebApp.showPopup({
         title: "Успешно",
@@ -1109,9 +1110,9 @@ const MiniApp = () => {
         cleanPhone
       );
 
-      // Сохраняем телефон в Firebase по ID пользователя, а не по ключу!
+      // Сохраняем телефон в Firebase по ID пользователя
       const success = await firebaseService.updateUserPhone(
-        userData.id, // Передаем ID, а не ключ
+        userData.id,
         cleanPhone
       );
 
@@ -1125,7 +1126,7 @@ const MiniApp = () => {
         phone: cleanPhone,
       });
 
-      // Сохраняем в localStorage с правильными ключами
+      // Сохраняем в localStorage
       localStorage.setItem("jetzone_phone", cleanPhone);
       localStorage.setItem("jetzone_phone_registered", "true");
       localStorage.setItem(
@@ -1133,7 +1134,7 @@ const MiniApp = () => {
         new Date().toISOString()
       );
 
-      // Удаляем старые ключи если есть
+      // Удаляем старые ключи
       localStorage.removeItem("phoneRegistered");
       localStorage.removeItem("registeredPhone");
       localStorage.removeItem("phoneRegistrationCompleted");
@@ -1142,7 +1143,7 @@ const MiniApp = () => {
 
       showSnackbar("✅ Номер телефона успешно привязан!", "success");
 
-      // Переходим к следующему шагу
+      // СРАЗУ переходим к заказам без возврата
       setActiveStep(2);
 
       // Загружаем заказы пользователя
@@ -1157,6 +1158,12 @@ const MiniApp = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Функция для повторной отправки запроса
+  const handleResendRequest = () => {
+    setRequestSent(false);
+    setError("");
   };
 
   // Эффект для проверки при монтировании
@@ -1244,7 +1251,22 @@ const MiniApp = () => {
         </Stepper>
 
         {error && (
-          <Alert severity="error" sx={{ mb: 2 }} onClose={() => setError("")}>
+          <Alert
+            severity="error"
+            sx={{ mb: 2 }}
+            onClose={() => setError("")}
+            action={
+              requestSent && (
+                <Button
+                  color="inherit"
+                  size="small"
+                  onClick={handleResendRequest}
+                >
+                  Отправить снова
+                </Button>
+              )
+            }
+          >
             {error}
           </Alert>
         )}
@@ -1276,7 +1298,7 @@ const MiniApp = () => {
               value={registrationKey}
               onChange={(e) => setRegistrationKey(e.target.value.toUpperCase())}
               onKeyPress={(e) => e.key === "Enter" && handleKeySubmit()}
-              placeholder="JET-ABC-123 или Vs20080413"
+              placeholder="JET-ABC-123"
               sx={{ mb: 3, mt: 2 }}
               disabled={loading}
               InputProps={{
@@ -1318,20 +1340,12 @@ const MiniApp = () => {
               {loading ? <CircularProgress size={24} /> : "Продолжить"}
             </Button>
 
+            {/* Кнопка активации всегда видна если есть Telegram и нет ключа */}
             {telegramUser && !requestSent && !isPhoneRegistered && (
-              <Box sx={{ mt: 3, mb: 2 }}>
-                <Divider sx={{ mb: 3 }}>
+              <Box sx={{ mt: 2 }}>
+                <Divider sx={{ mb: 2 }}>
                   <Chip label="или" size="small" />
                 </Divider>
-
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  gutterBottom
-                  align="center"
-                >
-                  У вас нет ключа? Отправьте запрос администратору
-                </Typography>
 
                 <Button
                   variant="outlined"
@@ -1343,19 +1357,17 @@ const MiniApp = () => {
                   }
                   fullWidth
                   size="large"
-                  sx={{ mt: 1 }}
                 >
-                  {loading ? "Отправка..." : "Активироваться"}
+                  {loading ? "Отправка..." : "Запросить ключ активации"}
                 </Button>
 
                 <Typography
                   variant="caption"
                   display="block"
-                  sx={{ mt: 1 }}
+                  sx={{ mt: 1, textAlign: "center" }}
                   color="textSecondary"
-                  align="center"
                 >
-                  После одобрения вы получите регистрационный ключ в Telegram
+                  Если у вас нет ключа - нажмите эту кнопку
                 </Typography>
               </Box>
             )}
@@ -1372,6 +1384,13 @@ const MiniApp = () => {
                 <Typography variant="body2">
                   Ожидайте ответа от администратора. Ключ придет в этот чат.
                 </Typography>
+                <Button
+                  size="small"
+                  sx={{ mt: 1 }}
+                  onClick={() => setRequestSent(false)}
+                >
+                  Отправить еще раз
+                </Button>
               </Alert>
             )}
           </Box>
@@ -1407,7 +1426,7 @@ const MiniApp = () => {
                   </Box>
                 </Box>
                 <Typography variant="body2">
-                  Для связи с курьером укажите ваш номер телефона:
+                  Для отслеживания заказов укажите ваш номер телефона:
                 </Typography>
               </CardContent>
             </Card>
@@ -1475,37 +1494,30 @@ const MiniApp = () => {
               />
             )}
 
-            <Box sx={{ display: "flex", gap: 2 }}>
-              <Button
-                variant="outlined"
-                onClick={() => setActiveStep(0)}
-                fullWidth
-                disabled={loading}
-              >
-                Назад
-              </Button>
-              <Button
-                variant="contained"
-                onClick={async () => {
-                  let phoneToSubmit;
-                  if (phoneOption === "telegram" && telegramUser?.phoneNumber) {
-                    phoneToSubmit = telegramUser.phoneNumber;
-                  } else {
-                    phoneToSubmit = phone;
-                  }
-
-                  await handlePhoneRegistration(phoneToSubmit);
-                }}
-                disabled={
-                  loading ||
-                  (phoneOption === "custom" && !phone) ||
-                  isPhoneRegistered
+            {/* Только кнопка ПРОДОЛЖИТЬ, без кнопки НАЗАД */}
+            <Button
+              variant="contained"
+              onClick={async () => {
+                let phoneToSubmit;
+                if (phoneOption === "telegram" && telegramUser?.phoneNumber) {
+                  phoneToSubmit = telegramUser.phoneNumber;
+                } else {
+                  phoneToSubmit = phone;
                 }
-                fullWidth
-              >
-                {loading ? <CircularProgress size={24} /> : "Продолжить"}
-              </Button>
-            </Box>
+
+                await handlePhoneRegistration(phoneToSubmit);
+              }}
+              disabled={
+                loading ||
+                (phoneOption === "custom" && !phone) ||
+                isPhoneRegistered
+              }
+              fullWidth
+              size="large"
+              sx={{ py: 1.5 }}
+            >
+              {loading ? <CircularProgress size={24} /> : "Продолжить"}
+            </Button>
 
             {/* Показываем сообщение, если номер уже был зарегистрирован */}
             {isPhoneRegistered && (
@@ -1703,6 +1715,7 @@ const MiniApp = () => {
                 <Button
                   variant="outlined"
                   onClick={() => window.Telegram.WebApp.close()}
+                  size="large"
                 >
                   Закрыть приложение
                 </Button>
@@ -1710,6 +1723,7 @@ const MiniApp = () => {
                 <Button
                   variant="outlined"
                   onClick={() => window.history.back()}
+                  size="large"
                 >
                   Вернуться назад
                 </Button>
