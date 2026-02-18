@@ -524,17 +524,19 @@ body {
 
 .ro-divider-chip {
   display: inline-block;
-  background: var(--ro-medium-gray);
+  background: rgba(0, 0, 0, 0);
   color: var(--ro-text-secondary);
   padding: 4px 12px;
   font-family: var(--ro-font-mono);
   font-size: 12px;
+  font-family: "Montserrat", sans-serif;
   position: relative;
   top: -12px;
 }
 
 .ro-activation-caption {
   margin-top: 12px;
+  font-family: "Montserrat", sans-serif;
   text-align: center;
   color: var(--ro-text-secondary);
   font-size: 12px;

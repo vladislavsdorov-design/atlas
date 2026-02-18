@@ -942,7 +942,14 @@ const KeyIcon = () => (
 const ShoppingBagIcon = () => <span className="icon">🛍️</span>;
 const LocationIcon = () => <span className="icon">📍</span>;
 const MoneyIcon = () => <span className="icon">💰</span>;
-const TelegramIcon = () => <span className="icon">✈️</span>;
+const TelegramIcon = () => (
+  <span className="icon">
+    <i
+      className="fa-brands fa-telegram"
+      style={{ color: "rgb(98, 98, 98)" }}
+    ></i>
+  </span>
+);
 const CheckCircleIcon = () => <span className="icon">✓</span>;
 const ShippingIcon = () => <span className="icon">🚚</span>;
 const ScheduleIcon = () => <span className="icon">⏰</span>;
@@ -1441,11 +1448,10 @@ const MiniApp = () => {
                     <span className="ro-loading-spinner-small" />
                   ) : (
                     <>
-                      <TelegramIcon />
                       <span className="icon">
                         <i
                           className="fa-solid fa-key"
-                          style={{ color: "rgb(255, 255, 255)" }}
+                          style={{ color: "rgb(47, 47, 47)" }}
                         ></i>
                       </span>{" "}
                       Запросить ключ активации
