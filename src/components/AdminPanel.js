@@ -561,11 +561,24 @@ const AdminPanel = () => {
           </Typography>
         </Box>
       ) : (
-        <Paper elevation={3} sx={{ mt: 3, borderRadius: 2 }}>
+        <Paper
+          elevation={3}
+          sx={{
+            mt: 3,
+            borderRadius: 2,
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <Tabs
             value={tabValue}
             onChange={(e, v) => setTabValue(v)}
-            sx={{ borderBottom: 1, borderColor: "divider" }}
+            sx={{
+              "& .MuiTabs-flexContainer": {
+                display: "flex",
+                flexDirection: "column", // ← ставим колонку
+              },
+            }}
           >
             <Tab label="👥 Пользователи" />
             <Tab label="📦 Добавить заказ" disabled={!selectedUser} />

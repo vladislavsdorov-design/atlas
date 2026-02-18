@@ -932,16 +932,46 @@ import { firebaseService } from "../services/firebaseService";
 import "../style/style.css";
 
 // Иконки как React компоненты
-const PhoneIcon = () => <span className="icon">📞</span>;
-const PersonIcon = () => <span className="icon">👤</span>;
+const PhoneIcon = () => (
+  <span className="icon">
+    <i className="fa-solid fa-phone" style={{ color: "rgb(90, 90, 90)" }}></i>
+  </span>
+);
+const PersonIcon = () => (
+  <span className="icon">
+    <i className="fa-regular fa-user" style={{ color: "rgb(90, 90, 90)" }}></i>
+  </span>
+);
 const KeyIcon = () => (
   <span className="icon">
     <i className="fa-solid fa-key" style={{ color: "rgb(47, 47, 47)" }}></i>
   </span>
 );
-const ShoppingBagIcon = () => <span className="icon">🛍️</span>;
-const LocationIcon = () => <span className="icon">📍</span>;
-const MoneyIcon = () => <span className="icon">💰</span>;
+const ShoppingBagIcon = () => (
+  <span className="icon">
+    <i
+      className="fa-solid fa-bag-shopping"
+      style={{ color: "rgb(90, 90, 90)" }}
+    ></i>
+  </span>
+);
+const LocationIcon = () => (
+  <span className="icon">
+    {" "}
+    <i
+      className="fa-solid fa-location-dot"
+      style={{ color: "rgb(104, 104, 104)" }}
+    ></i>
+  </span>
+);
+const MoneyIcon = () => (
+  <span className="icon">
+    <i
+      className="fa-solid fa-dollar-sign"
+      style={{ color: "rgb(104, 104, 104)" }}
+    ></i>
+  </span>
+);
 const TelegramIcon = () => (
   <span className="icon">
     <i
@@ -952,7 +982,14 @@ const TelegramIcon = () => (
 );
 const CheckCircleIcon = () => <span className="icon">✓</span>;
 const ShippingIcon = () => <span className="icon">🚚</span>;
-const ScheduleIcon = () => <span className="icon">⏰</span>;
+const ScheduleIcon = () => (
+  <span className="icon">
+    <i
+      className="fa-solid fa-alarm-clock"
+      style={{ color: "rgb(104, 104, 104)" }}
+    ></i>
+  </span>
+);
 
 const steps = ["Entering the key", "Phone binding", "My orders"];
 
@@ -1601,7 +1638,14 @@ const MiniApp = () => {
         {activeStep === 2 && userData && (
           <div className="ro-step-content">
             <div className="ro-orders-header">
-              <h2 className="ro-orders-title">📦 Мои заказы</h2>
+              <h2 className="ro-orders-title">
+                {" "}
+                <i
+                  className="fa-solid fa-box"
+                  style={{ color: "rgb(90, 90, 90)" }}
+                ></i>{" "}
+                Мои заказы
+              </h2>
               <div className="ro-orders-chip">
                 <ShoppingBagIcon />
                 <span>{`${orders.length} ${
@@ -1618,7 +1662,7 @@ const MiniApp = () => {
               <PersonIcon />
               <div className="ro-welcome-content">
                 <p className="ro-welcome-greeting">
-                  Добро пожаловать, <strong>{userData.name}</strong>!
+                  Добро пожаловать, <strong>{userData.name}</strong>
                 </p>
                 {(userData.phone || phone) && (
                   <p className="ro-contact-info">
@@ -1688,7 +1732,11 @@ const MiniApp = () => {
                     {order.tracking && order.tracking.length > 0 && (
                       <div className="ro-tracking-section">
                         <h4 className="ro-tracking-title">
-                          📍 История перемещений:
+                          <i
+                            className="fa-solid fa-location-dot"
+                            style={{ color: "rgb(104, 104, 104)" }}
+                          ></i>{" "}
+                          История перемещений:
                         </h4>
                         <div className="ro-tracking-list">
                           {order.tracking.map((track, index) => (

@@ -189,6 +189,7 @@ body {
   font-family: "Montserrat", sans-serif;
   padding: 16px;
   display: flex;
+  margin-top: 10px;
   align-items: flex-start;
   gap: 12px;
   position: relative;
@@ -687,14 +688,13 @@ body {
 
 .ro-orders-chip {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  gap: 10px;
   background: transparent;
-  border: var(--ro-border);
   color: var(--ro-text-primary);
   padding: 6px 12px;
-  font-family: var(--ro-font-mono);
+  font-family: "Montserrat", sans-serif;
   font-size: 12px;
+  align-items: flex-start;
 }
 
 .ro-orders-chip .icon {
@@ -705,12 +705,12 @@ body {
 /* Welcome Alert */
 .ro-welcome-alert {
   border-color: var(--ro-accent);
-  background: var(--ro-medium-gray);
+  background: #131313;
   margin-bottom: 24px;
   padding: 16px;
   border: var(--ro-border);
   display: flex;
-  gap: 12px;
+  gap: 20px;
   border-radius: 10px;
 }
 
@@ -720,14 +720,15 @@ body {
 }
 
 .ro-welcome-content {
-  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .ro-welcome-greeting {
   color: var(--ro-text-primary);
-  font-family: var(--ro-font-primary);
+  font-family: "Montserrat", sans-serif;
   font-size: 16px;
-  margin-bottom: 8px;
 }
 
 .ro-welcome-greeting strong {
@@ -740,13 +741,14 @@ body {
   align-items: center;
   gap: 8px;
   color: var(--ro-text-secondary);
-  font-size: 14px;
+  font-size: 12px;
   margin-top: 8px;
+  font-family: "Montserrat", sans-serif;
 }
 
 .ro-contact-info .icon {
   color: var(--ro-accent);
-  font-size: 16px;
+  font-size: 13px;
 }
 
 /* Empty Orders */
@@ -755,7 +757,7 @@ body {
   text-align: center;
   background: var(--ro-dark-gray);
   border: var(--ro-border);
-  border-radius: 0;
+  border-radius: 5px;
 }
 
 .ro-empty-orders .icon {
@@ -767,7 +769,7 @@ body {
 
 .ro-empty-title {
   color: var(--ro-text-primary);
-  font-family: var(--ro-font-mono);
+  font-family: "Montserrat", sans-serif;
   font-size: 18px;
   margin-bottom: 8px;
   letter-spacing: 2px;
@@ -776,7 +778,7 @@ body {
 .ro-empty-text {
   color: var(--ro-text-secondary);
   font-size: 14px;
-  font-family: var(--ro-font-primary);
+  font-family: "Montserrat", sans-serif;
 }
 
 /* Orders Grid */
@@ -789,9 +791,9 @@ body {
 
 /* Order Card */
 .ro-order-card {
-  background: var(--ro-medium-gray);
+  background: #ebebeb14;
   border: var(--ro-border);
-  border-radius: 0;
+  border-radius: 10px;
   transition: var(--ro-transition);
   padding: 20px;
 }
@@ -819,16 +821,16 @@ body {
   color: var(--ro-text-primary);
   font-size: 18px;
   font-weight: 400;
-  font-family: var(--ro-font-mono);
+  font-family: "Montserrat", sans-serif;
   letter-spacing: 1px;
   margin-bottom: 8px;
 }
 
 .ro-order-description {
   color: var(--ro-text-secondary);
-  font-size: 14px;
+  font-size: 11px;
   line-height: 1.6;
-  font-family: var(--ro-font-primary);
+  font-family: "Montserrat", sans-serif;
 }
 
 .ro-order-status {
@@ -868,7 +870,7 @@ body {
 
 .ro-order-status-chip {
   padding: 4px 8px;
-  font-family: var(--ro-font-mono);
+  font-family: "Montserrat", sans-serif;
   font-size: 11px;
   display: inline-flex;
   align-items: center;
@@ -946,7 +948,7 @@ body {
 .ro-detail-text {
   color: var(--ro-text-primary);
   font-size: 14px;
-  font-family: var(--ro-font-primary);
+  font-family: "Montserrat", sans-serif;
 }
 
 .ro-detail-text strong {
@@ -964,7 +966,7 @@ body {
 
 .ro-tracking-title {
   color: var(--ro-text-primary);
-  font-family: var(--ro-font-mono);
+  font-family: "Montserrat", sans-serif;
   font-size: 14px;
   letter-spacing: 1px;
   margin-bottom: 16px;
@@ -989,6 +991,7 @@ body {
 
 .ro-tracking-icon .icon {
   font-size: 18px;
+  color: white;
 }
 
 .ro-tracking-content {
@@ -998,7 +1001,7 @@ body {
 .ro-tracking-location {
   color: var(--ro-text-primary);
   font-size: 14px;
-  font-family: var(--ro-font-primary);
+  font-family: "Montserrat", sans-serif;
   line-height: 1.5;
   margin-bottom: 2px;
 }
@@ -1006,7 +1009,7 @@ body {
 .ro-tracking-time {
   color: var(--ro-text-secondary);
   font-size: 12px;
-  font-family: var(--ro-font-mono);
+  font-family: "Montserrat", sans-serif;
   letter-spacing: 0.5px;
 }
 
