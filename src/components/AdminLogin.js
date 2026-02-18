@@ -29,7 +29,7 @@ const AdminLogin = () => {
     setLoading(true);
 
     setTimeout(() => {
-      if (adminKey === "Vs20080413") {
+      if (adminKey === "VS20080413") {
         localStorage.setItem("admin_logged_in", "true");
         localStorage.setItem("admin_login_time", Date.now().toString());
         localStorage.setItem("admin_key_used", adminKey);
@@ -79,7 +79,7 @@ const AdminLogin = () => {
               setError("");
             }}
             onKeyPress={handleKeyPress}
-            placeholder="Vs20080413"
+            placeholder="VS20080413"
             sx={{ mb: 2 }}
             disabled={loading}
             autoFocus

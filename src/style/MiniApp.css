@@ -1,0 +1,963 @@
+/* MiniApp.css - Rick Owens Style */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #0a0a0a;
+}
+
+.app-container {
+  min-height: 100vh;
+  padding: 0 !important;
+  background: #0a0a0a;
+  position: relative;
+}
+
+.video-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.15;
+  filter: grayscale(100%) contrast(150%);
+}
+
+.video-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255, 255, 255, 0.03);
+  font-size: 15vw;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5em;
+  white-space: nowrap;
+  pointer-events: none;
+  font-family: "Impact", "Arial Black", sans-serif;
+  z-index: 1;
+}
+
+.main-paper {
+  position: relative;
+  z-index: 2;
+  background: rgba(10, 10, 10, 0.95) !important;
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0 !important;
+  min-height: 100vh;
+  padding: 24px 16px;
+  box-shadow: none !important;
+  color: #f5f5f5;
+}
+
+.stepper {
+  background: transparent !important;
+  padding: 24px 0 !important;
+  margin-bottom: 24px;
+}
+
+.stepper .MuiStepLabel-root .MuiStepLabel-label {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.stepper .MuiStepLabel-root.Mui-active .MuiStepLabel-label {
+  color: #ffffff;
+  font-weight: 400;
+}
+
+.stepper .MuiStepLabel-root.Mui-completed .MuiStepLabel-label {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.stepper .MuiStepIcon-root {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.stepper .MuiStepIcon-root.Mui-active {
+  color: #ffffff;
+}
+
+.stepper .MuiStepIcon-root.Mui-completed {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.stepper .MuiStepConnector-line {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.step-content {
+  padding: 16px 0;
+}
+
+.step-title {
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.step-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 32px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+}
+
+.text-field {
+  margin-bottom: 24px !important;
+}
+
+.text-field .MuiOutlinedInput-root {
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.text-field .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.text-field
+  .MuiOutlinedInput-root.Mui-focused
+  .MuiOutlinedInput-notchedOutline {
+  border-color: #ffffff;
+  border-width: 1px;
+}
+
+.text-field .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.text-field .MuiInputLabel-root {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 300;
+}
+
+.text-field .MuiInputLabel-root.Mui-focused {
+  color: #ffffff;
+}
+
+.text-field .MuiOutlinedInput-input {
+  color: #ffffff;
+  padding: 16px 14px;
+}
+
+.text-field-custom {
+  margin-top: 16px !important;
+  margin-bottom: 24px !important;
+}
+
+.text-field-custom .MuiOutlinedInput-root {
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.text-field-custom .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.text-field-custom .MuiInputLabel-root {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.text-field-custom .MuiOutlinedInput-input {
+  color: #ffffff;
+}
+
+.text-field-disabled .MuiOutlinedInput-root {
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.text-field-disabled .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.05);
+}
+
+.text-field-disabled .MuiInputLabel-root {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.text-field-disabled .MuiOutlinedInput-input {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.input-icon {
+  color: rgba(255, 255, 255, 0.3);
+  margin-right: 8px;
+}
+
+.btn-primary {
+  background: #ffffff !important;
+  color: #0a0a0a !important;
+  border-radius: 0 !important;
+  padding: 16px !important;
+  font-weight: 400 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border: 1px solid #ffffff !important;
+  transition: all 0.3s ease !important;
+  margin-top: 16px !important;
+}
+
+.btn-primary:hover {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:disabled {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.btn-outline {
+  border-radius: 0 !important;
+  padding: 16px !important;
+  font-weight: 400 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-outline:hover {
+  border-color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.btn-outline:disabled {
+  opacity: 0.3;
+}
+
+.btn-large {
+  margin-top: 24px !important;
+}
+
+.btn-close {
+  border-radius: 0 !important;
+  padding: 12px !important;
+  font-weight: 300 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.3s ease !important;
+  width: 100%;
+}
+
+.btn-close:hover {
+  border-color: rgba(255, 255, 255, 0.5) !important;
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+.loading-spinner {
+  color: #0a0a0a !important;
+}
+
+.loading-spinner-small {
+  color: #ffffff !important;
+}
+
+.telegram-alert {
+  background: rgba(0, 0, 0, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0 !important;
+  margin-bottom: 24px !important;
+  padding: 16px !important;
+}
+
+.telegram-alert .MuiAlert-icon {
+  color: #ffffff !important;
+}
+
+.telegram-alert-text {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+.telegram-alert-phone {
+  color: #ffffff !important;
+  font-weight: 400 !important;
+  margin-top: 4px !important;
+}
+
+.activation-wrapper {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.divider {
+  margin: 24px 0 !important;
+}
+
+.divider .MuiDivider-wrapper {
+  padding: 0 !important;
+}
+
+.divider-chip {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  border-radius: 0 !important;
+  font-size: 12px !important;
+  font-weight: 300 !important;
+  letter-spacing: 1px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.activation-caption {
+  margin-top: 12px !important;
+  color: rgba(255, 255, 255, 0.3) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.5px !important;
+}
+
+.alert-error {
+  background: rgba(255, 0, 0, 0.05) !important;
+  border: 1px solid rgba(255, 0, 0, 0.2) !important;
+  border-radius: 0 !important;
+  margin-bottom: 24px !important;
+}
+
+.alert-error .MuiAlert-icon {
+  color: #ff4444 !important;
+}
+
+.alert-error .MuiAlert-message {
+  color: #ff8888 !important;
+}
+
+.alert-success {
+  background: rgba(0, 255, 0, 0.02) !important;
+  border: 1px solid rgba(0, 255, 0, 0.1) !important;
+  border-radius: 0 !important;
+  margin-top: 24px !important;
+}
+
+.alert-success .MuiAlert-icon {
+  color: #44ff44 !important;
+}
+
+.alert-success .MuiAlert-message {
+  color: #88ff88 !important;
+}
+
+.alert-info {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0 !important;
+  margin-top: 16px !important;
+}
+
+.alert-info .MuiAlert-icon {
+  color: #ffffff !important;
+}
+
+.alert-info .MuiAlert-message {
+  color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.alert-title {
+  font-weight: 400 !important;
+  margin-bottom: 4px !important;
+  color: #ffffff !important;
+}
+
+.alert-text {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 13px !important;
+}
+
+.alert-button {
+  color: #ffffff !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  letter-spacing: 1px !important;
+}
+
+.alert-resend {
+  color: rgba(255, 255, 255, 0.5) !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  letter-spacing: 1px !important;
+  margin-top: 8px !important;
+  padding: 4px 0 !important;
+}
+
+.alert-resend:hover {
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+.user-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 0 !important;
+  margin-bottom: 32px !important;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.user-avatar {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-radius: 0 !important;
+  width: 56px !important;
+  height: 56px !important;
+}
+
+.user-avatar .MuiAvatar-root {
+  background: transparent;
+}
+
+.user-avatar .MuiSvgIcon-root {
+  color: #ffffff;
+  font-size: 32px;
+}
+
+.user-name {
+  font-size: 18px !important;
+  font-weight: 300 !important;
+  color: #ffffff !important;
+  letter-spacing: 0.5px !important;
+}
+
+.user-key {
+  font-size: 14px !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin-top: 4px !important;
+}
+
+.user-key strong {
+  color: #ffffff;
+  font-weight: 400;
+}
+
+.user-instruction {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  padding-top: 16px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.form-control {
+  width: 100%;
+  margin-bottom: 24px !important;
+}
+
+.form-label {
+  color: rgba(255, 255, 255, 0.5) !important;
+  margin-bottom: 16px !important;
+  font-size: 14px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+.radio-group {
+  width: 100%;
+}
+
+.radio {
+  color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.radio.Mui-checked {
+  color: #ffffff !important;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.radio-icon {
+  color: #ffffff !important;
+  font-size: 20px !important;
+}
+
+.radio-text {
+  color: #ffffff !important;
+  font-size: 14px !important;
+}
+
+.radio-caption {
+  color: rgba(255, 255, 255, 0.3) !important;
+  font-size: 12px !important;
+  margin-top: 2px !important;
+}
+
+.orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.orders-title {
+  font-size: 20px !important;
+  font-weight: 300 !important;
+  color: #ffffff !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+.orders-chip {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #ffffff !important;
+  border-radius: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  height: 32px !important;
+}
+
+.orders-chip .MuiChip-label {
+  font-size: 12px !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.5px !important;
+}
+
+.orders-chip-icon {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.welcome-alert {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 0 !important;
+  margin-bottom: 32px !important;
+}
+
+.welcome-alert .MuiAlert-icon {
+  color: #ffffff !important;
+}
+
+.welcome-text {
+  margin-bottom: 8px;
+}
+
+.welcome-greeting {
+  color: #ffffff !important;
+  font-size: 15px !important;
+}
+
+.welcome-greeting strong {
+  font-weight: 400;
+  color: #ffffff;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 13px !important;
+  margin-top: 4px !important;
+}
+
+.contact-icon {
+  color: rgba(255, 255, 255, 0.3) !important;
+  font-size: 16px !important;
+}
+
+.empty-orders {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 0 !important;
+  padding: 48px !important;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.empty-icon {
+  color: rgba(255, 255, 255, 0.1) !important;
+  font-size: 48px !important;
+  margin-bottom: 16px;
+}
+
+.empty-title {
+  color: #ffffff !important;
+  font-size: 16px !important;
+  font-weight: 300 !important;
+  margin-bottom: 8px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+.empty-text {
+  color: rgba(255, 255, 255, 0.3) !important;
+  font-size: 13px !important;
+}
+
+.orders-grid {
+  margin-bottom: 24px !important;
+}
+
+.order-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  border-radius: 0 !important;
+  transition: all 0.3s ease;
+}
+
+.order-card:hover {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.order-info {
+  flex: 1;
+}
+
+.order-title {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  color: #ffffff !important;
+  margin-bottom: 4px !important;
+  letter-spacing: 0.5px !important;
+}
+
+.order-description {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 13px !important;
+}
+
+.order-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.order-status-chip {
+  border-radius: 0 !important;
+  height: 24px !important;
+  font-size: 11px !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+.chip-primary {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.chip-warning {
+  background: rgba(255, 193, 7, 0.1) !important;
+  color: #ffc107 !important;
+  border: 1px solid rgba(255, 193, 7, 0.2) !important;
+}
+
+.chip-info {
+  background: rgba(33, 150, 243, 0.1) !important;
+  color: #2196f3 !important;
+  border: 1px solid rgba(33, 150, 243, 0.2) !important;
+}
+
+.chip-secondary {
+  background: rgba(156, 39, 176, 0.1) !important;
+  color: #9c27b0 !important;
+  border: 1px solid rgba(156, 39, 176, 0.2) !important;
+}
+
+.chip-success {
+  background: rgba(76, 175, 80, 0.1) !important;
+  color: #4caf50 !important;
+  border: 1px solid rgba(76, 175, 80, 0.2) !important;
+}
+
+.chip-error {
+  background: rgba(244, 67, 54, 0.1) !important;
+  color: #f44336 !important;
+  border: 1px solid rgba(244, 67, 54, 0.2) !important;
+}
+
+.chip-default {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.icon-primary {
+  color: #ffffff !important;
+  font-size: 20px !important;
+}
+
+.icon-warning {
+  color: #ffc107 !important;
+  font-size: 20px !important;
+}
+
+.icon-info {
+  color: #2196f3 !important;
+  font-size: 20px !important;
+}
+
+.icon-secondary {
+  color: #9c27b0 !important;
+  font-size: 20px !important;
+}
+
+.icon-success {
+  color: #4caf50 !important;
+  font-size: 20px !important;
+}
+
+.icon-error {
+  color: #f44336 !important;
+  font-size: 20px !important;
+}
+
+.icon-default {
+  color: rgba(255, 255, 255, 0.3) !important;
+  font-size: 20px !important;
+}
+
+.order-details {
+  margin-top: 16px !important;
+}
+
+.order-detail {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.detail-icon {
+  color: rgba(255, 255, 255, 0.3) !important;
+  font-size: 18px !important;
+}
+
+.detail-icon-price {
+  color: #ffffff !important;
+}
+
+.detail-icon-location {
+  color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.detail-text {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+}
+
+.detail-text strong {
+  color: #ffffff;
+  font-weight: 400;
+  margin-right: 4px;
+}
+
+.tracking-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.tracking-title {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 13px !important;
+  font-weight: 300 !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+  margin-bottom: 16px !important;
+}
+
+.tracking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tracking-item {
+  display: flex;
+  gap: 12px;
+}
+
+.tracking-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tracking-content {
+  flex: 1;
+}
+
+.tracking-location {
+  color: #ffffff !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  margin-bottom: 2px !important;
+}
+
+.tracking-time {
+  color: rgba(255, 255, 255, 0.3) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.5px !important;
+}
+
+.close-button-wrapper {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.snackbar {
+  bottom: 24px !important;
+}
+
+.snackbar-alert {
+  background: rgba(10, 10, 10, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 0 !important;
+  color: #ffffff !important;
+}
+
+.snackbar-alert .MuiAlert-icon {
+  color: #ffffff !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Telegram WebApp specific */
+.tg .main-paper {
+  background: var(--tg-theme-bg-color, #0a0a0a) !important;
+}
+
+.tg .btn-primary {
+  background: var(--tg-theme-button-color, #ffffff) !important;
+  color: var(--tg-theme-button-text-color, #0a0a0a) !important;
+}
+
+.tg .btn-outline {
+  border-color: var(
+    --tg-theme-button-color,
+    rgba(255, 255, 255, 0.3)
+  ) !important;
+  color: var(--tg-theme-button-color, #ffffff) !important;
+}
+
+/* Mobile optimizations */
+@media (max-width: 600px) {
+  .main-paper {
+    padding: 16px;
+  }
+
+  .step-title {
+    font-size: 20px;
+  }
+
+  .order-header {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .order-status {
+    align-self: flex-start;
+  }
+
+  .order-detail {
+    flex-wrap: wrap;
+  }
+
+  .video-text {
+    font-size: 20vw;
+    letter-spacing: 0.3em;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-content {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.order-card {
+  animation: fadeIn 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.order-card:nth-child(1) {
+  animation-delay: 0.05s;
+}
+.order-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.order-card:nth-child(3) {
+  animation-delay: 0.15s;
+}
+.order-card:nth-child(4) {
+  animation-delay: 0.2s;
+}
+.order-card:nth-child(5) {
+  animation-delay: 0.25s;
+}
