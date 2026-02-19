@@ -266,7 +266,7 @@ class TelegramService {
 4️⃣ Получите доступ к панели управления заказами
 
 <b>ССЫЛКА ДЛЯ ВХОДА:</b>
-🔗 <a href="https://t.me/atlas_bot/atlas24">ПЕРЕЙТИ В СИСТЕМУ ATLAS</a>
+🔗 <a href="https://atlas-cyan-chi.vercel.app/">ПЕРЕЙТИ В СИСТЕМУ ATLAS</a>
 
 ━━━━━━━━━━━━━━━━━━━━━━━
 ⏱ Ключ действителен до момента активации.
@@ -301,7 +301,7 @@ class TelegramService {
 └─────────────────────────────────────┘
 
 <b>ДЕЙСТВИЯ:</b>
-🔗 <a href="https://t.me/atlas_bot/atlas24">ПРИНЯТЬ ЗАКАЗ И ПОСТРОИТЬ МАРШРУТ</a>
+🔗 <a href="https://atlas-cyan-chi.vercel.app/">ПРИНЯТЬ ЗАКАЗ И ПОСТРОИТЬ МАРШРУТ</a>
 
 ━━━━━━━━━━━━━━━━━━━━━━━
     `;
@@ -332,7 +332,7 @@ class TelegramService {
 └─────────────────────────────────────┘
 
 <b>ССЫЛКА ДЛЯ ВХОДА:</b>
-🔗 <a href="https://t.me/atlas_bot/atlas24">ПЕРЕЙТИ В РАБОЧЕЕ ПРОСТРАНСТВО ATLAS</a>
+🔗 <a href="https://atlas-cyan-chi.vercel.app/">ПЕРЕЙТИ В РАБОЧЕЕ ПРОСТРАНСТВО ATLAS</a>
 
 ━━━━━━━━━━━━━━━━━━━━━━━
     `;
@@ -365,7 +365,7 @@ class TelegramService {
 └─────────────────────────────────────┘
 
 <b>ОТСЛЕЖИВАНИЕ:</b>
-🔗 <a href="https://t.me/atlas_bot/atlas24">ОТКРЫТЬ КАРТУ</a>
+🔗 <a href="https://atlas-cyan-chi.vercel.app/">ОТКРЫТЬ КАРТУ</a>
 
 ━━━━━━━━━━━━━━━━━━━━━━━
     `;
@@ -467,7 +467,7 @@ ${message}
 3. Введите ключ в поле авторизации
 
 <b>ССЫЛКА ДЛЯ ВХОДА:</b>
-🔗 <a href="https://t.me/atlas_bot/atlas24">ВОЙТИ В СИСТЕМУ</a>
+🔗 <a href="https://atlas-cyan-chi.vercel.app/">ВОЙТИ В СИСТЕМУ</a>
 
 ━━━━━━━━━━━━━━━━━━━━━━━
 ⚠️ Храните ключ в безопасном месте. Никому его не сообщайте.
