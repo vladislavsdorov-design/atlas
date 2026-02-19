@@ -1525,7 +1525,13 @@ const MiniApp = () => {
         {/* Шаг 2: Привязка телефона */}
         {activeStep === 1 && userData && (
           <div className="ro-step-content">
-            <h1 className="ro-step-title">📱 Привязка телефона</h1>
+            <h1 className="ro-step-title">
+              <i
+                className="fa-solid fa-phone"
+                style={{ color: "rgb(104, 104, 104)" }}
+              ></i>
+              Привязка телефона
+            </h1>
 
             <div className="ro-user-card">
               <div className="ro-user-info">
@@ -1590,9 +1596,10 @@ const MiniApp = () => {
                 <label>Ваш номер телефона</label>
                 <input
                   type="tel"
+                  className="inputphons"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+7 (999) 123-45-67"
+                  placeholder="+0 (000) 000-00-00"
                   disabled={loading}
                   required
                 />

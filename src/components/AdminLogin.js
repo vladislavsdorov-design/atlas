@@ -79,7 +79,7 @@ const AdminLogin = () => {
               setError("");
             }}
             onKeyPress={handleKeyPress}
-            placeholder="VS20080413"
+            placeholder="------"
             sx={{ mb: 2 }}
             disabled={loading}
             autoFocus

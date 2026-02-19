@@ -569,6 +569,7 @@ body {
   align-items: center;
   justify-content: center;
   font-size: 24px;
+  border-radius: 10px;
 }
 
 .ro-user-name {
@@ -590,12 +591,21 @@ body {
   color: var(--ro-accent);
   font-weight: 400;
 }
-
+.inputphons {
+  border-radius: 10px;
+  width: 80%;
+  height: 40px;
+  padding: 10px;
+  background-color: #0a0a0a00;
+  color: white;
+  font-family: "Montserrat", sans-serif;
+  border: solid 2px rgb(113, 113, 113);
+}
 .ro-user-instruction {
   color: var(--ro-text-primary);
   font-size: 14px;
   line-height: 1.6;
-  font-family: var(--ro-font-primary);
+  font-family: "Montserrat", sans-serif;
   padding-top: 16px;
   border-top: var(--ro-border);
 }
